@@ -46,7 +46,7 @@ function wrapper(plugin_info) {
                 var portalInPolygon = false;
                 for(var dl in drawLayer){
                     if(drawLayer[dl].type === 'polygon'){
-                        if(window.plugin.multiexport.portalinpolygon(latlng,drawLayer[dl].latLngs)){
+                        if(window.plugin.multiLayer.portalinpolygon(latlng,drawLayer[dl].latLngs)){
                             portalInPolygon = true;
                             break;
                         }
@@ -118,6 +118,25 @@ function wrapper(plugin_info) {
             }
         })
 
+    };
+
+    window.plugin.multiLayer.portalinpolygon = function(portal,LatLngsObjectsArray)
+    {
+        var portalCoords = portal.split(',');
+
+        var x = portalCoords[0], y = portalCoords[1];
+
+        var inside = false;
+        for (var i = 0, j = LatLngsObjectsArray.length - 1; i < LatLngsObjectsArray.length; j = i++) {
+            var xi = LatLngsObjectsArray[i]['lat'], yi = LatLngsObjectsArray[i]['lng'];
+            var xj = LatLngsObjectsArray[j]['lat'], yj = LatLngsObjectsArray[j]['lng'];
+
+            var intersect = ((yi > y) != (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+
+        return inside;
     };
 
     window.plugin.multiLayer.intersects = function (a,b,c,d,p,q,r,s) {
