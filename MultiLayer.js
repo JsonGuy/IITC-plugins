@@ -104,14 +104,13 @@ function wrapper(plugin_info) {
                     }
 
                     if (canLink) {
-                        var layer2 = L.geodesicPolygon([p1._latlng, linkablePortal._latlng, L.latLng(data.result[2]/1000000, data.result[3]/1000000)]);
+                        var layer2 = L.geodesicPolygon([p1._latlng, linkablePortal._latlng, L.latLng(data.result[2]/1000000, data.result[3]/1000000)], window.plugin.drawTools.polygonOptions);
                         var layerType2 = 'polygon';
 
                         map.fire('draw:created', {
                             layer: layer2,
                             layerType: layerType2
                         });
-                        console.log('possible link created')
                         linkesDone.push([p1._latlng, linkablePortal._latlng]);
                     }
                 }
